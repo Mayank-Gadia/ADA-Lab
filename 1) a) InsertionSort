@@ -1,6 +1,4 @@
 #include <iostream>
-#include <chrono>
-
 using namespace std;
 
 // Function to print an array
@@ -11,19 +9,21 @@ void printArray(int array[], int size) {
     cout << endl;
 }
 
+// Function to perform insertion sort on an array
 void insertionSort(int array[], int size) {
-    for (int step = 1; step < size; step++) {
-        int key = array[step];
-        int j = step - 1;
+    // Iterate through the array starting from the second element
+    for (int i = 1; i < size; i++) {
+        int currentElement = array[i]; // Current element to be inserted
+        int j = i - 1; // Index of the previous element
 
-        // Compare key with each element on the left of it until an element smaller than
-        // it is found.
-        // For descending order, change key < array[j] to key > array[j].
-        while (j >= 0 && key < array[j]) {
+        // Move elements greater than the current element to the right
+        while (j >= 0 && currentElement < array[j]) {
             array[j + 1] = array[j];
-            --j;
+            j--;
         }
-        array[j + 1] = key;
+
+        // Insert the current element in its correct position
+        array[j + 1] = currentElement;
     }
 }
 
@@ -31,19 +31,12 @@ int main() {
     int data[] = {9, 5, 1, 4, 3};
     int size = sizeof(data) / sizeof(data[0]);
 
+    // Call the insertion sort function
     insertionSort(data, size);
 
+    // Display the sorted array
     cout << "Sorted array in ascending order:\n";
     printArray(data, size);
-
-    auto insertionSortStartTime = chrono::high_resolution_clock::now();
-    insertionSort(data, size - 1);
-    auto insertionSortEndTime = chrono::high_resolution_clock::now();
-
-    chrono::duration<double> insertionSortExecutionTime = (insertionSortEndTime - insertionSortStartTime);
-
-    cout << "Insertion Sort Execution Time: " << insertionSortExecutionTime.count() << " seconds.\n";
-    cout << "Space used by Insertion Sort: " << sizeof(data) + size * sizeof(data[0]) << " bytes.\n";
 
     return 0;
 }
