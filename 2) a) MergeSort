@@ -1,30 +1,22 @@
 #include <iostream>
-#include <chrono>
-
 using namespace std;
 
-// Merge two subarrays L and M into arr
+// Merge two sorted subarrays L and M into arr
 void merge(int arr[], int p, int q, int r) {
-    // Create L ← A[p..q] and M ← A[q+1..r]
     int n1 = q - p + 1;
     int n2 = r - q;
-
     int L[n1], M[n2];
 
+    // Copy data to temporary arrays L[] and M[]
     for (int i = 0; i < n1; i++)
         L[i] = arr[p + i];
     for (int j = 0; j < n2; j++)
         M[j] = arr[q + 1 + j];
 
-    // Maintain current index of sub-arrays and main array
-    int i, j, k;
-    i = 0;
-    j = 0;
-    k = p;
-
-    // Until we reach either end of either L or M, pick larger among
-    // elements L and M and place them in the correct position at A[p..r]
+    // Merge the temporary arrays back into arr[p..r]
+    int i = 0, j = 0, k = p;
     while (i < n1 && j < n2) {
+        // Compare elements from L and M, then merge them back into arr
         if (L[i] <= M[j]) {
             arr[k] = L[i];
             i++;
@@ -35,14 +27,14 @@ void merge(int arr[], int p, int q, int r) {
         k++;
     }
 
-    // When we run out of elements in either L or M,
-    // pick up the remaining elements and put them in A[p..r]
+    // Copy the remaining elements of L[], if any
     while (i < n1) {
         arr[k] = L[i];
         i++;
         k++;
     }
 
+    // Copy the remaining elements of M[], if any
     while (j < n2) {
         arr[k] = M[j];
         j++;
@@ -50,20 +42,22 @@ void merge(int arr[], int p, int q, int r) {
     }
 }
 
-// Divide the array into two subarrays, sort them and merge them
+// Recursive function to perform merge sort on the array
 void mergeSort(int arr[], int l, int r) {
     if (l < r) {
-        // m is the point where the array is divided into two subarrays
+        // Find the middle point of the array
         int m = l + (r - l) / 2;
+
+        // Recursively sort the first and second halves
         mergeSort(arr, l, m);
         mergeSort(arr, m + 1, r);
 
-        // Merge the sorted subarrays
+        // Merge the sorted halves
         merge(arr, l, m, r);
     }
 }
 
-// Print the array
+// Function to print the elements of the array
 void printArray(int arr[], int size) {
     for (int i = 0; i < size; i++)
         cout << arr[i] << " ";
@@ -72,22 +66,16 @@ void printArray(int arr[], int size) {
 
 // Driver program
 int main() {
+    // Sample array to be sorted
     int arr[] = {6, 5, 12, 10, 9, 1};
     int size = sizeof(arr) / sizeof(arr[0]);
 
+    // Call the mergeSort function to sort the array
     mergeSort(arr, 0, size - 1);
 
+    // Display the sorted array
     cout << "Sorted array: \n";
     printArray(arr, size);
-
-    auto mergeSortStartTime = chrono::high_resolution_clock::now();
-    mergeSort(arr, 0, size - 1);
-    auto mergeSortEndTime = chrono::high_resolution_clock::now();
-
-    chrono::duration<double> mergeSortExecutionTime = (mergeSortEndTime - mergeSortStartTime);
-
-    cout << "Merge Sort Execution Time: " << mergeSortExecutionTime.count() << " seconds.\n";
-    cout << "Space used by Merge Sort: " << sizeof(arr) + size * sizeof(arr[0]) << " bytes.\n";
 
     return 0;
 }
