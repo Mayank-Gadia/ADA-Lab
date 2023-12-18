@@ -1,6 +1,4 @@
 #include <iostream>
-#include <chrono>
-
 using namespace std;
 
 // Function to swap the position of two elements
@@ -18,16 +16,19 @@ void printArray(int array[], int size) {
     cout << endl;
 }
 
+// Function to perform selection sort on an array
 void selectionSort(int array[], int size) {
+    // Iterate through the array
     for (int step = 0; step < size - 1; step++) {
-        int min_idx = step;
+        int min_idx = step; // Assume the current index has the minimum value
+
+        // Find the minimum element in the unsorted part of the array
         for (int i = step + 1; i < size; i++) {
-            // To sort in descending order, change > to < in this line.
-            // Select the minimum element in each loop.
             if (array[i] < array[min_idx])
                 min_idx = i;
         }
-        // Put min at the correct position
+
+        // Swap the found minimum element with the first element
         swap(&array[min_idx], &array[step]);
     }
 }
@@ -36,19 +37,12 @@ int main() {
     int data[] = {20, 22, 62, 15, 82};
     int size = sizeof(data) / sizeof(data[0]);
 
+    // Call the selection sort function
     selectionSort(data, size);
 
+    // Display the sorted array
     cout << "Sorted array in Ascending Order:\n";
     printArray(data, size);
-
-    auto selectionSortStartTime = chrono::high_resolution_clock::now();
-    selectionSort(data, size - 1);
-    auto selectionSortEndTime = chrono::high_resolution_clock::now();
-
-    chrono::duration<double> selectionSortExecutionTime = (selectionSortEndTime - selectionSortStartTime);
-
-    cout << "Selection Sort Execution Time: " << selectionSortExecutionTime.count() << " seconds.\n";
-    cout << "Space used by Selection Sort: " << sizeof(data) + size * sizeof(data[0]) << " bytes.\n";
 
     return 0;
 }
