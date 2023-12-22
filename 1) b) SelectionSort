@@ -1,13 +1,6 @@
 #include <iostream>
 using namespace std;
 
-// Function to swap the position of two elements
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
 // Function to print an array
 void printArray(int array[], int size) {
     for (int i = 0; i < size; i++) {
@@ -19,22 +12,24 @@ void printArray(int array[], int size) {
 // Function to perform selection sort on an array
 void selectionSort(int array[], int size) {
     // Iterate through the array
-    for (int step = 0; step < size - 1; step++) {
-        int min_idx = step; // Assume the current index has the minimum value
+    for (int i = 0; i < size - 1; i++) {
+        int min_idx = i; // Assume the current index has the minimum value
 
         // Find the minimum element in the unsorted part of the array
-        for (int i = step + 1; i < size; i++) {
-            if (array[i] < array[min_idx])
-                min_idx = i;
+        for (int j = i + 1; j < size; j++) {  
+            if (array[j] < array[min_idx])
+                min_idx = j;
         }
 
         // Swap the found minimum element with the first element
-        swap(&array[min_idx], &array[step]);
+        int temp = array[min_idx];
+        array[min_idx] =  array[i];
+        array[i] = temp;
     }
 }
 
 int main() {
-    int data[] = {20, 22, 62, 15, 82};
+    int data[] = {56, 22, 0, 15, 5};
     int size = sizeof(data) / sizeof(data[0]);
 
     // Call the selection sort function
