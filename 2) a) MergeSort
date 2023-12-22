@@ -46,7 +46,7 @@ void merge(int arr[], int p, int q, int r) {
 void mergeSort(int arr[], int l, int r) {
     if (l < r) {
         // Find the middle point of the array
-        int m = l + (r - l) / 2;
+        int m =  (r + l) / 2;
 
         // Recursively sort the first and second halves
         mergeSort(arr, l, m);
