@@ -1,5 +1,5 @@
+
 #include <iostream>
-#include <climits>
 using namespace std;
 
 // Function to find the minimum of two integers
@@ -7,67 +7,51 @@ int min(int a, int b) {
     return (a < b) ? a : b;
 }
 
-// Function to perform Floyd-Warshall algorithm
-void floyds(int p[10][10], int n) {
-    for (int k = 1; k <= n; k++)
-        for (int i = 1; i <= n; i++)
-            for (int j = 1; j <= n; j++)
-                if (i != j)
-                    p[i][j] = min(p[i][j], p[i][k] + p[k][j]);
+// Function to compute all-pairs shortest paths using Floyd's algorithm
+void floyd(int p[10][10], int n) {
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                p[i][j] = min(p[i][j], p[i][k] + p[k][j]);
 }
 
 int main() {
-    int p[10][10], w, n, e, u, v, i, j;
+    int p[10][10], n, e, u, v, w, i, j;
 
     // Input the number of vertices and edges
     cout << "\n Enter the number of vertices:";
     cin >> n;
-    cout << "\n Enter the number of edges:\n";
+    cout << "\n Enter the number of edges:";
     cin >> e;
 
-    // Initialize matrix with maximum values
-    for (i = 1; i <= n; i++)
-        for (j = 1; j <= n; j++)
-            p[i][j] = (i == j) ? 0 : INT_MAX;
+    // Initialize the matrix with infinity
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            p[i][j] = (i == j) ? 0 : 99999;
 
-    // Input the end vertices and weights of each edge
-    for (i = 1; i <= e; i++) {
-        cout << "\n Enter the end vertices of edge " << i << " with its weight \n";
+    // Input the edges and their weights
+    for (i = 0; i < e; i++) {
+        cout << "\n Enter the vertices and weight of edge " << i + 1 << ":";
         cin >> u >> v >> w;
-        p[u][v] = w;
+        p[u][v] = w; 
     }
 
     // Display the matrix of input data
-    cout << "\n Matrix of input data:\n";
-    for (i = 1; i <= n; i++) {
-        for (j = 1; j <= n; j++) {
-            if (p[i][j] == INT_MAX)
-                cout << "INF\t";
-            else
-                cout << p[i][j] << "\t";
-        }
+    cout << "\n Matrix of input data: \n";
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++)
+            cout << p[i][j] << "\t";
         cout << "\n";
     }
 
-    // Compute and display the transitive closure
-    floyds(p, n);
-    cout << "\n Transitive closure:\n";
-    for (i = 1; i <= n; i++) {
-        for (j = 1; j <= n; j++) {
-            if (p[i][j] == INT_MAX)
-                cout << "INF\t";
-            else
-                cout << p[i][j] << "\t";
-        }
+    // Compute and display all-pairs shortest paths
+    floyd(p, n);
+    cout << "\n All-pairs shortest paths: \n";
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++)
+            cout << p[i][j] << "\t";
         cout << "\n";
     }
-
-    // Display the shortest paths
-    cout << "\n The shortest paths are:\n";
-    for (i = 1; i <= n; i++)
-        for (j = 1; j <= n; j++)
-            if (i != j && p[i][j] != INT_MAX)
-                cout << "\n <" << i << "," << j << ">=" << p[i][j];
 
     return 0;
 }
