@@ -1,77 +1,54 @@
-// C++ Implementation of the Quick Sort Algorithm.
 #include <iostream>
 using namespace std;
- 
-int partition(int arr[], int start, int end)
-{
- 
-    int pivot = arr[start];
- 
-    int count = 0;
-    for (int i = start + 1; i <= end; i++) {
-        if (arr[i] <= pivot)
-            count++;
-    }
- 
-    // Giving pivot element its correct position
-    int pivotIndex = start + count;
-    swap(arr[pivotIndex], arr[start]);
- 
-    // Sorting left and right parts of the pivot element
-    int i = start, j = end;
- 
-    while (i < pivotIndex && j > pivotIndex) {
- 
-        while (arr[i] <= pivot) {
-            i++;
-        }
- 
-        while (arr[j] > pivot) {
-            j--;
-        }
- 
-        if (i < pivotIndex && j > pivotIndex) {
-            swap(arr[i++], arr[j--]);
-        }
-    }
- 
-    return pivotIndex;
-}
- 
-void quickSort(int arr[], int start, int end)
-{
- 
-    // base case
-    if (start >= end)
-        return;
- 
-    // partitioning the array
-    int p = partition(arr, start, end);
- 
-    // Sorting the left part
-    quickSort(arr, start, p - 1);
- 
-    // Sorting the right part
-    quickSort(arr, p + 1, end);
-}
 
+// Function to swap two elements
 void swap(int& a, int& b) {
     int temp = a;
     a = b;
     b = temp;
 }
- 
-int main()
-{
- 
-    int arr[] = { 9, 3, 4, 2, 1, 8 };
-    int n = 6;
- 
-    quickSort(arr, 0, n - 1);
- 
+
+// Partition function (traditional approach)
+int partition(int arr[], int start, int end) {
+    int pivot = arr[end];  // Select the last element as the pivot
+    int i = start;         // i points to the position of smaller elements
+
+    for (int j = start; j < end; j++) {
+        // If current element is smaller than or equal to the pivot
+        if (arr[j] <= pivot) {
+            swap(arr[i], arr[j]);  // Swap to bring smaller element forward
+            i++;  // Move the boundary of smaller elements
+        }
+    }
+
+    // Place pivot in its correct position
+    swap(arr[i], arr[end]);
+
+    return i;  // Return the pivot index
+}
+
+// QuickSort function to recursively sort the array
+void quickSort(int arr[], int start, int end) {
+    if (start < end) {
+        // Partition the array and get the pivot index
+        int p = partition(arr, start, end);
+
+        // Recursively sort the left and right subarrays
+        quickSort(arr, start, p - 1);
+        quickSort(arr, p + 1, end);
+    }
+}
+
+int main() {
+    int arr[] = {9, 3, 4, 2, 1, 8};  // Sample array
+    int n = sizeof(arr) / sizeof(arr[0]);  // Calculate number of elements
+
+    quickSort(arr, 0, n - 1);  // Calling QuickSort
+
+    // Printing the sorted array
     for (int i = 0; i < n; i++) {
         cout << arr[i] << " ";
     }
- 
+
     return 0;
 }
