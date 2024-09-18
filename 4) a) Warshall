@@ -1,17 +1,13 @@
 #include <iostream>
 using namespace std;
 
-// Function to find the maximum of two integers
-int max(int a, int b) {
-    return (a > b) ? a : b;
-}
 
 // Function to compute the transitive closure using Warshall's algorithm
 void warshall(int p[10][10], int n) {
-    for (int k = 1; k <= n; k++)
-        for (int i = 1; i <= n; i++)
-            for (int j = 1; j <= n; j++)
-                p[i][j] = max(p[i][j], p[i][k] || p[k][j]);
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                p[i][j] = p[i][j] || (p[i][k] && p[k][j]);
 }
 
 int main() {
@@ -24,25 +20,30 @@ int main() {
     cin >> e;
 
     // Input the end vertices of each edge
-    for (i = 1; i <= e; i++) {
-        cout << "\n Enter the end vertices of edge " << i << ":";
+    for (i = 0; i < e; i++) {
+        cout << "\n Enter the end vertices of edge " << i + 1 << ":";
         cin >> u >> v;
         p[u][v] = 1;
     }
 
     // Display the matrix of input data
     cout << "\n Matrix of input data: \n";
-    for (i = 1; i <= n; i++) {
-        for (j = 1; j <= n; j++)
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++)
             cout << p[i][j] << "\t";
         cout << "\n";
+    }
+
+    // Set diagonal elements to 1
+    for (i = 0; i < n; i++) {
+        p[i][i] = 1;
     }
 
     // Compute and display the transitive closure
     warshall(p, n);
     cout << "\n Transitive closure: \n";
-    for (i = 1; i <= n; i++) {
-        for (j = 1; j <= n; j++)
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++)
             cout << p[i][j] << "\t";
         cout << "\n";
     }
