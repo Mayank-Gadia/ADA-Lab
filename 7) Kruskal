@@ -1,0 +1,71 @@
+#include <iostream>
+
+using namespace std;
+
+int minVal, cost[100][100], parent[100], i, j, x, y, n;
+
+void find_min();
+int check_cycle(int x, int y);
+
+int main()
+{
+    int count = 0, tot = 0, flag = 0;
+    cout << "Enter the number of vertices" << endl;
+    cin >> n;
+    cout << "Enter the cost matrix" << endl;
+    cout << "Enter 999 for No edges and self-loops" << endl;
+    for (i = 1; i <= n; i++)
+    {
+        for (j = 1; j <= n; j++)
+        {
+            cin >> cost[i][j];
+            parent[j] = 0;
+        }
+    }
+
+    while (count != n - 1 && minVal != 999)
+    {
+        find_min();
+        flag = check_cycle(x, y);
+        if (flag == 1)
+        {
+            cout << "\n" << x << "----->" << y << "==" << cost[x][y] << endl;
+            count++;
+            tot += cost[x][y];
+        }
+        cost[x][y] = cost[y][x] = 999;
+    }
+
+    cout << "\nThe total cost of the minimum spanning tree = " << tot << endl;
+    return 0;
+}
+
+void find_min()
+{
+    minVal = 999;
+    for (i = 1; i <= n; i++)
+    {
+        for (j = 1; j <= n; j++)
+        {
+            if (cost[i][j] < minVal)
+            {
+                minVal = cost[i][j];
+                x = i;
+                y = j;
+            }
+        }
+    }
+}
+
+int check_cycle(int x, int y)
+{
+    if ((parent[x] == parent[y]) && (parent[x] != 0))
+        return 0;
+    else if (parent[x] == 0 && parent[y] == 0)
+        parent[x] = parent[y] = x;
+    else if (parent[x] == 0)
+        parent[x] = parent[y];
+    else if (parent[x] != parent[y])
+        parent[y] = parent[x];
+    return 1;
+}
