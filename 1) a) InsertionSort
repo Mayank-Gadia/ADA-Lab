@@ -1,3 +1,4 @@
+//Insertion Sort
 #include <iostream>
 using namespace std;
 
@@ -9,17 +10,15 @@ void printArray(int array[], int size) {
     cout << endl;
 }
 
-// Function to perform insertion sort on an array
 void insertionSort(int array[], int size) {
     // Iterate through the array starting from the second element
     for (int i = 1; i < size; i++) {
         int currentElement = array[i]; // Current element to be inserted
-        int j = i - 1; // Index of the previous element
+        int j;
 
-        // Move elements greater than the current element to the right
-        while (j >= 0 && currentElement < array[j]) {
-            array[j + 1] = array[j];
-            j--;
+        // Find the correct position for the current element
+        for (j = i - 1; j >= 0 && currentElement < array[j]; j--) {
+            array[j + 1] = array[j]; // Move elements greater than the current element to the right
         }
 
         // Insert the current element in its correct position
